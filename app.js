@@ -15,6 +15,7 @@ app.set('view engine', 'ejs')
 ;
 
 app.use(express.static('public'))
+app.use(express.urlencoded({extended: true}))
 app.use(morgan('dev'))
 
 // app.get('/add-blog',(req,res) =>{
@@ -94,6 +95,20 @@ app.get('/blogs', (req,res) =>{
         .catch((err) =>{
             console.log(err)
         })
+})
+
+app.post('/blogs',(req,res) =>{
+    console.log(req.body)
+    const blog = new Blog(req.body)
+
+    blog.save()
+        .then(result =>{
+            res.redirect('/blogs')
+        })
+        .catch(err =>{
+            console.log(err)
+        })
+
 })
 
 app.get('/blogs/create',(req,res) => {
